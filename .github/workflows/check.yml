@@ -1,0 +1,29 @@
+# GitHub Actions — runs your drill tests automatically on every push.
+#
+# This file IS the tutorial. Read the comments; they explain each key.
+# GitHub finds it because of the path: .github/workflows/*.yml
+
+name: drills                      # shown on the Actions tab
+
+on:                               # WHEN to run
+  push:                           # every push to any branch
+  pull_request:                   # and on every PR
+
+jobs:
+  test:
+    runs-on: ubuntu-latest        # a fresh Linux VM, free for public repos
+
+    steps:
+      # 1. Copy your repo onto the VM. Almost every workflow starts here.
+      - uses: actions/checkout@v4
+
+      # 2. Install Python.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # 3. Run your checker.
+      #    check.py exits 1 when any drill fails, and a non-zero exit code
+      #    is how Actions decides between a green tick and a red X.
+      - name: Run drill checker
+        run: python check.py
